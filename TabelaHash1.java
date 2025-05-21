@@ -1,0 +1,2 @@
+public class TabelaHash1 {
+}
