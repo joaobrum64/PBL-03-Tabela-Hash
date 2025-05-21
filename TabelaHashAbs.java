@@ -1,59 +1,39 @@
 public abstract class TabelaHashAbs {
-    protected Node[] tabela;
     protected int tamanho;
+    protected LinkedList[] tabela;
     protected int colisoes;
 
     public TabelaHashAbs(int tamanho) {
         this.tamanho = tamanho;
-        this.tabela = new Node[tamanho];
-        this.colisoes = 0;
+        tabela = new LinkedList[tamanho];
+        for (int i = 0; i < tamanho; i++) {
+            tabela[i] = new LinkedList();
+        }
+        colisoes = 0;
     }
 
-    protected abstract int funcaoHash(String chave);
+    protected abstract int hash(String chave);
 
-    public void insert(String chave) {
-        int indice = funcaoHash(chave);
-        Node novo = new Node(chave);
-
-        if (tabela[indice] == null) {
-            tabela[indice] = novo;
-        } else {
-            colisoes++;
-            Node atual = tabela[indice];
-            while (atual.proximo != null) {
-                atual = atual.proximo;
-            }
-            atual.proximo = novo;
-        }
+    public void put(String chave) {
+        int indice = hash(chave);
+        if (!tabela[indice].estaVazia()) colisoes++;
+        tabela[indice].add(chave);
     }
 
-    public boolean search(String chave) {
-        int indice = funcaoHash(chave);
-        Node atual = tabela[indice];
-        while (atual != null) {
-            if (atual.chave.equals(chave)) {
-                return true;
-            }
-            atual = atual.proximo;
+    public boolean contains(String chave) {
+        int indice = hash(chave);
+        return tabela[indice].contains(chave);
+    }
+
+    public int[] contValoresPosicao() {
+        int[] cont = new int[tamanho];
+        for (int i = 0; i < tamanho; i++) {
+            cont[i] = tabela[i].size();
         }
-        return false;
+        return cont;
     }
 
     public int getColisoes() {
         return colisoes;
-    }
-
-    public int[] contValoresPosicao() {
-        int[] distribuicao = new int[tamanho];
-        for (int i = 0; i < tamanho; i++) {
-            int cont = 0;
-            Node atual = tabela[i];
-            while (atual != null) {
-                cont++;
-                atual = atual.proximo;
-            }
-            distribuicao[i] = cont;
-        }
-        return distribuicao;
     }
 }

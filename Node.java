@@ -1,9 +1,9 @@
 public class Node {
-    String chave;
+    String valor;
     Node proximo;
 
     public Node(String chave) {
-        this.chave = chave;
+        this.valor = chave;
         this.proximo = null;
     }
 }
