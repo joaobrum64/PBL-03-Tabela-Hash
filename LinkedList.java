@@ -1,15 +1,18 @@
 public class LinkedList {
     private Node inicio;
 
+
     public LinkedList() {
         inicio = null;
     }
+
 
     public void add(String valor) {
         Node novo = new Node(valor);
         novo.proximo = inicio;
         inicio = novo;
     }
+
 
     public boolean contains(String valor) {
         Node atual = inicio;
@@ -19,6 +22,7 @@ public class LinkedList {
         }
         return false;
     }
+
 
     public int size() {
         int cont = 0;
@@ -30,7 +34,8 @@ public class LinkedList {
         return cont;
     }
 
-    public boolean estaVazia() {
+
+    public boolean isEmpty() {
         return inicio == null;
     }
 }
