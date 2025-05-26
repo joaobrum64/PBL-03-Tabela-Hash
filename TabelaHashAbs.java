@@ -68,4 +68,16 @@ public abstract class TabelaHashAbs {
     public int getColisoes() {
         return colisoes;
     }
+
+    /**
+     * Calcula o fator de carga da tabela hash
+     * @return fator de carga
+     */
+    public double getFatorCarga() {
+        int totalElementos = 0;
+        for (LinkedList lista : tabela) {
+            totalElementos += lista.tamanho();
+        }
+        return (double) totalElementos / tamanho;
+    }
 }

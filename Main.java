@@ -61,12 +61,14 @@ public class Main {
 
         System.out.println("\nTabelaHash1 (função hash polinomial base 31):");
         System.out.println("Colisões: " + tabelaHash1.getColisoes());
+        System.out.println("Fator de Carga: " + String.format("%.2f", tabelaHash1.getFatorCarga()));
         System.out.println("Tempo de inserção: " + (tempoFim1 - tempoInicio1) / 1_000_000.0 + " ms");
         System.out.println("Tempo de busca: " + (tempoBuscaFim1 - tempoBuscaInicio1) / 1_000_000.0 + " ms");
         exibirDistribuicao(tabelaHash1);
 
         System.out.println("\nTabelaHash2 (função hash com mistura de bits):");
         System.out.println("Colisões: " + tabelaHash2.getColisoes());
+        System.out.println("Fator de Carga: " + String.format("%.2f", tabelaHash2.getFatorCarga()));
         System.out.println("Tempo de inserção: " + (tempoFim2 - tempoInicio2) / 1_000_000.0 + " ms");
         System.out.println("Tempo de busca: " + (tempoBuscaFim2 - tempoBuscaInicio2) / 1_000_000.0 + " ms");
         exibirDistribuicao(tabelaHash2);
