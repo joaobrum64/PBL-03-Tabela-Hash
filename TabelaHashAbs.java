@@ -1,9 +1,18 @@
+/**
+ * Classe abstrata que implementa o funcionamento básico de uma tabela hash
+ */
 public abstract class TabelaHashAbs {
+    // Tamanho da tabela hash
     protected int tamanho;
+    // Array de listas encadeadas que forma a tabela hash
     protected LinkedList[] tabela;
+    // Contador de colisões ocorridas
     protected int colisoes;
 
-
+    /**
+     * Construtor - Inicializa a tabela hash com o tamanho especificado
+     * @param tamanho número de posições na tabela
+     */
     public TabelaHashAbs(int tamanho) {
         this.tamanho = tamanho;
         tabela = new LinkedList[tamanho];
@@ -13,32 +22,49 @@ public abstract class TabelaHashAbs {
         colisoes = 0;
     }
 
+    /**
+     * Método abstrato que define a função de hash
+     * @param chave valor a ser transformado em índice
+     * @return índice calculado pela função hash
+     */
+    protected abstract int funcaoHash(String chave);
 
-    protected abstract int hash(String chave);
-
-
-    public void put(String chave) {
-        int indice = hash(chave);
-        if (!tabela[indice].isEmpty()) colisoes++;
-        tabela[indice].add(chave);
+    /**
+     * Insere uma chave na tabela hash
+     * @param chave valor a ser inserido
+     */
+    public void inserir(String chave) {
+        int indice = funcaoHash(chave);
+        if (!tabela[indice].estaVazia()) colisoes++;
+        tabela[indice].adicionar(chave);
     }
 
-
-    public boolean contains(String chave) {
-        int indice = hash(chave);
-        return tabela[indice].contains(chave);
+    /**
+     * Verifica se uma chave existe na tabela
+     * @param chave valor a ser procurado
+     * @return verdadeiro se a chave for encontrada, falso caso contrário
+     */
+    public boolean contem(String chave) {
+        int indice = funcaoHash(chave);
+        return tabela[indice].contem(chave);
     }
 
-
-    public int[] contValoresPosicao() {
-        int[] cont = new int[tamanho];
+    /**
+     * Conta quantos elementos existem em cada posição da tabela
+     * @return array com a contagem de elementos por posição
+     */
+    public int[] contarElementosPorPosicao() {
+        int[] contagem = new int[tamanho];
         for (int i = 0; i < tamanho; i++) {
-            cont[i] = tabela[i].size();
+            contagem[i] = tabela[i].tamanho();
         }
-        return cont;
+        return contagem;
     }
 
-
+    /**
+     * Retorna o número de colisões ocorridas
+     * @return total de colisões
+     */
     public int getColisoes() {
         return colisoes;
     }

@@ -2,70 +2,85 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
+/**
+ * Classe principal que testa e compara as implementações das tabelas hash
+ */
 public class Main {
     public static void main(String[] args) {
+        // Constantes de configuração
         final int TAMANHO_TABELA = 32;
-        final String ARQUIVO = "female_names.txt";
+        final String ARQUIVO_NOMES = "female_names.txt";
         String[] nomes = new String[5000];
 
-        try (BufferedReader br = new BufferedReader(new FileReader(ARQUIVO))) {
+        // Leitura do arquivo de nomes
+        try (BufferedReader leitor = new BufferedReader(new FileReader(ARQUIVO_NOMES))) {
             String linha;
             int i = 0;
-            while ((linha = br.readLine()) != null && i < 5000) {
+            while ((linha = leitor.readLine()) != null && i < 5000) {
                 nomes[i++] = linha.trim();
             }
-        } catch (IOException e) {
-            System.err.println("Erro ao ler arquivo: " + e.getMessage());
+        } catch (IOException erro) {
+            System.err.println("Erro ao ler arquivo: " + erro.getMessage());
             return;
         }
 
-        TabelaHashAbs tabela1 = new TabelaHash1(TAMANHO_TABELA);
-        TabelaHashAbs tabela2 = new TabelaHash2(TAMANHO_TABELA);
+        // Criação das tabelas hash
+        TabelaHashAbs tabelaHash1 = new TabelaHash1(TAMANHO_TABELA);
+        TabelaHashAbs tabelaHash2 = new TabelaHash2(TAMANHO_TABELA);
 
-        long inicio1 = System.nanoTime();
+        // Teste de inserção na primeira tabela
+        long tempoInicio1 = System.nanoTime();
         for (String nome : nomes) {
-            tabela1.put(nome);
+            tabelaHash1.inserir(nome);
         }
-        long fim1 = System.nanoTime();
+        long tempoFim1 = System.nanoTime();
 
-        long inicio2 = System.nanoTime();
+        // Teste de inserção na segunda tabela
+        long tempoInicio2 = System.nanoTime();
         for (String nome : nomes) {
-            tabela2.put(nome);
+            tabelaHash2.inserir(nome);
         }
-        long fim2 = System.nanoTime();
+        long tempoFim2 = System.nanoTime();
 
-        long buscaInicio1 = System.nanoTime();
+        // Teste de busca na primeira tabela
+        long tempoBuscaInicio1 = System.nanoTime();
         for (String nome : nomes) {
-            tabela1.contains(nome);
+            tabelaHash1.contem(nome);
         }
-        long buscaFim1 = System.nanoTime();
+        long tempoBuscaFim1 = System.nanoTime();
 
-        long buscaInicio2 = System.nanoTime();
+        // Teste de busca na segunda tabela
+        long tempoBuscaInicio2 = System.nanoTime();
         for (String nome : nomes) {
-            tabela2.contains(nome);
+            tabelaHash2.contem(nome);
         }
-        long buscaFim2 = System.nanoTime();
+        long tempoBuscaFim2 = System.nanoTime();
 
+        // Exibição dos resultados
         System.out.println("=== RELATÓRIO COMPARATIVO ===");
 
         System.out.println("\nTabelaHash1 (função hash polinomial base 31):");
-        System.out.println("Colisões: " + tabela1.getColisoes());
-        System.out.println("Tempo de inserção: " + (fim1 - inicio1) / 1_000_000.0 + " ms");
-        System.out.println("Tempo de busca: " + (buscaFim1 - buscaInicio1) / 1_000_000.0 + " ms");
-        exibirDistribuicao(tabela1);
+        System.out.println("Colisões: " + tabelaHash1.getColisoes());
+        System.out.println("Tempo de inserção: " + (tempoFim1 - tempoInicio1) / 1_000_000.0 + " ms");
+        System.out.println("Tempo de busca: " + (tempoBuscaFim1 - tempoBuscaInicio1) / 1_000_000.0 + " ms");
+        exibirDistribuicao(tabelaHash1);
 
         System.out.println("\nTabelaHash2 (função hash com mistura de bits):");
-        System.out.println("Colisões: " + tabela2.getColisoes());
-        System.out.println("Tempo de inserção: " + (fim2 - inicio2) / 1_000_000.0 + " ms");
-        System.out.println("Tempo de busca: " + (buscaFim2 - buscaInicio2) / 1_000_000.0 + " ms");
-        exibirDistribuicao(tabela2);
+        System.out.println("Colisões: " + tabelaHash2.getColisoes());
+        System.out.println("Tempo de inserção: " + (tempoFim2 - tempoInicio2) / 1_000_000.0 + " ms");
+        System.out.println("Tempo de busca: " + (tempoBuscaFim2 - tempoBuscaInicio2) / 1_000_000.0 + " ms");
+        exibirDistribuicao(tabelaHash2);
     }
 
+    /**
+     * Exibe a distribuição de elementos em cada posição da tabela hash
+     * @param tabela tabela hash a ser analisada
+     */
     public static void exibirDistribuicao(TabelaHashAbs tabela) {
-        int[] dist = tabela.contValoresPosicao();
+        int[] distribuicao = tabela.contarElementosPorPosicao();
         System.out.println("Distribuição de chaves por posição:");
-        for (int i = 0; i < dist.length; i++) {
-            System.out.printf("Posição %2d: %d elementos%n", i, dist[i]);
+        for (int i = 0; i < distribuicao.length; i++) {
+            System.out.printf("Posição %2d: %d elementos%n", i, distribuicao[i]);
         }
     }
 }

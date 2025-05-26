@@ -1,41 +1,57 @@
 public class LinkedList {
-    private Node inicio;
+    // Referência para o primeiro nó da lista encadeada
+    private Node primeiro;
 
-
+    /**
+     * Construtor - Cria uma lista encadeada vazia
+     */
     public LinkedList() {
-        inicio = null;
+        primeiro = null;
     }
 
-
-    public void add(String valor) {
-        Node novo = new Node(valor);
-        novo.proximo = inicio;
-        inicio = novo;
+    /**
+     * Adiciona um novo valor no início da lista
+     * @param valor valor a ser adicionado
+     */
+    public void adicionar(String valor) {
+        Node novoNo = new Node(valor);
+        novoNo.proximo = primeiro;
+        primeiro = novoNo;
     }
 
-
-    public boolean contains(String valor) {
-        Node atual = inicio;
-        while (atual != null) {
-            if (atual.valor.equals(valor)) return true;
-            atual = atual.proximo;
+    /**
+     * Verifica se um valor existe na lista
+     * @param valor valor a ser procurado
+     * @return verdadeiro se o valor for encontrado, falso caso contrário
+     */
+    public boolean contem(String valor) {
+        Node noAtual = primeiro;
+        while (noAtual != null) {
+            if (noAtual.valor.equals(valor)) return true;
+            noAtual = noAtual.proximo;
         }
         return false;
     }
 
-
-    public int size() {
-        int cont = 0;
-        Node atual = inicio;
-        while (atual != null) {
-            cont++;
-            atual = atual.proximo;
+    /**
+     * Calcula o tamanho da lista
+     * @return número de elementos na lista
+     */
+    public int tamanho() {
+        int contador = 0;
+        Node noAtual = primeiro;
+        while (noAtual != null) {
+            contador++;
+            noAtual = noAtual.proximo;
         }
-        return cont;
+        return contador;
     }
 
-
-    public boolean isEmpty() {
-        return inicio == null;
+    /**
+     * Verifica se a lista está vazia
+     * @return verdadeiro se a lista estiver vazia, falso caso contrário
+     */
+    public boolean estaVazia() {
+        return primeiro == null;
     }
 }
