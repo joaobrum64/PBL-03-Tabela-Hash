@@ -54,4 +54,12 @@ public class LinkedList {
     public boolean estaVazia() {
         return primeiro == null;
     }
+
+    /**
+     * Retorna o primeiro nó da lista (método público para acesso controlado)
+     * @return primeiro nó da lista
+     */
+    public Node getPrimeiroNo() {
+        return primeiro;
+    }
 }
